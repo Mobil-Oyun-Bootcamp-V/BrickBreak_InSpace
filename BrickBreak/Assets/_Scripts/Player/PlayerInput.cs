@@ -29,7 +29,7 @@ public class PlayerInput : MonoBehaviour
                     difY = touch.position.y - firstPos.y;
                     break;
                 case TouchPhase.Ended:
-                    PlayerManager.playerState = PlayerManager.PlayerState.PlayingMOD;
+                    PlayerManager.SetMOD("FireMOD");
                     break;
             }
         }

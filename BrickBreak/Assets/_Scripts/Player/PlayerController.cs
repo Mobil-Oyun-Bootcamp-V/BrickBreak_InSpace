@@ -1,43 +1,42 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : PlayerData
 {
-    bool IsPlaying;
     int counter;
 
-    ObjectPool _objectPool;
+    Pool _bulletPool;
     PlayerInput _playerInput;
     WeaponRotater _weaponRotater;
     void Awake()
     {
-        _objectPool = FindObjectOfType<ObjectPool>();
+        _bulletPool = GameObject.FindGameObjectWithTag("BulletPool").GetComponent<Pool>();
         _playerInput = new PlayerInput(this);
         _weaponRotater = new WeaponRotater();
     }
     void Update()
     {
-        if (IsPlaying)
-        {
-            return;
-        }
         switch (PlayerManager.playerState)
         {
-            case PlayerManager.PlayerState.FireMOD:
+            case PlayerManager.PlayerState.PlayingMOD:
+                return;
+
+            case PlayerManager.PlayerState.AimMOD:
                 _weaponRotater.RotateWeapon(weapon,_playerInput.Active());
                 break;
 
-            case PlayerManager.PlayerState.PlayingMOD:
+            case PlayerManager.PlayerState.FireMOD:
                 StartCoroutine(WaitAndPush());
-                IsPlaying = true;
+                PlayerManager.SetMOD("PlayingMOD");
                 break;
         }
     }
     IEnumerator WaitAndPush() 
     {
-        yield return new WaitForSeconds(0.1f);
-        _weaponRotater.Shout(_objectPool.GetBullet(spawnPoint), weapon, bulletSpeed);
+        yield return new WaitForSeconds(0.05f);
+        _weaponRotater.Shout(_bulletPool.GetObject(spawnPoint), weapon, bulletSpeed);
         counter++;
         if (counter != ballCount) 
         {
@@ -48,18 +47,9 @@ public class PlayerController : PlayerData
             counter = 0;
         }
     }
-    public IEnumerator SetXPosition(Vector2 receiveTargetPos)
+    public void Move(Vector2 receiveTargetPos)
     {
-        float time = 0;
-        Vector2 startPosition = transform.position;
-        Vector2 targetPosition = new Vector2(receiveTargetPos.x, transform.position.y);
-        while (time < horizontalSpeed)
-        {
-            transform.position = Vector2.Lerp(startPosition, targetPosition, time / horizontalSpeed);
-            time += Time.deltaTime;
-            yield return null;
-        }
-        transform.position = targetPosition;
+       StartCoroutine(SupportClass.LerpMove(this.gameObject, transform.position, new Vector2(receiveTargetPos.x, transform.position.y), 1));
     }
 
 }

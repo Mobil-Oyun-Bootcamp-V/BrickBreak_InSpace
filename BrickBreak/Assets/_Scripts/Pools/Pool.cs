@@ -2,24 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool : MonoBehaviour
+public class Pool : MonoBehaviour
 {
     public Queue<GameObject> queue;
-
-    [SerializeField]
-    GameObject spawnObject;
-    [SerializeField]
-    int objectCount;
-
+    [SerializeField] GameObject spawnObject;
+    [SerializeField] int objectCount;
     void Awake()
     {
         queue = new Queue<GameObject>();
     }
     void Start()
     {
-        CreateBullet(objectCount);
+        CreateObject(objectCount);
     }
-    void CreateBullet(int count)
+    void CreateObject(int count)
     {
         for (int i = 1; i <= count; i++)
         {
@@ -28,11 +24,16 @@ public class ObjectPool : MonoBehaviour
             queue.Enqueue(spawnableObject);
         }
     }
-    public GameObject GetBullet(Transform newTransform)
+    public GameObject GetObject(Transform newTransform)
     {
         GameObject newObject = queue.Dequeue();
         newObject.transform.position = newTransform.position;
         newObject.SetActive(true);
         return newObject;
+    }
+    public void SetObject(GameObject gameObject)
+    {
+        gameObject.SetActive(false);
+        queue.Enqueue(gameObject);
     }
 }
