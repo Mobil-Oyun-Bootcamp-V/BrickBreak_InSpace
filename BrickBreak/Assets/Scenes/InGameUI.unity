@@ -360,9 +360,10 @@ GameObject:
   - component: {fileID: 688539941}
   - component: {fileID: 688539940}
   - component: {fileID: 688539943}
+  - component: {fileID: 688539944}
   m_Layer: 0
   m_Name: BotGameLine
-  m_TagString: Untagged
+  m_TagString: BotLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -472,6 +473,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anchorType: 1
   anchorOffset: {x: 0, y: 2.5, z: 0}
+--- !u!114 &688539944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 688539939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 022ef3894ba9d0346808c4aa7dea219e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &970945182
 GameObject:
   m_ObjectHideFlags: 0

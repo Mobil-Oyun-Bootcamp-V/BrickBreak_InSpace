@@ -7,6 +7,8 @@ public class CubeController : MonoBehaviour
 {
     [field: SerializeField] public int point { get; private set; }
     [field: SerializeField] public List<Sprite> sprites { get; private set; }
+    [field: SerializeField] public List<int> levelBounds{ get; private set; }
+
     TextMeshPro pointText;
 
     CubeSprite _cubeSprite;

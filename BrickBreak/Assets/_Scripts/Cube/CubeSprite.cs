@@ -6,24 +6,30 @@ public class CubeSprite : MonoBehaviour
 {
     CubeController _cubeController;
     SpriteRenderer _currentSprite;
+    
     int spriteIndex;
+    int point;
+    List<int> levelBound;
     public CubeSprite(CubeController cubeController)
-    {
+    {   
         _cubeController = cubeController;
+        levelBound = _cubeController.levelBounds;
         _currentSprite = _cubeController.GetComponent<SpriteRenderer>();
     }
 
     public void StartSprite()
     {
-        if (_cubeController.point >= 500)
+        point = _cubeController.point;
+
+        if (point >= levelBound[0])
         {
             spriteIndex = 0;
         }
-        else if (_cubeController.point >= 250)
+        else if (point >= levelBound[1])
         {
             spriteIndex = 1;
         }
-        else if (_cubeController.point >= 100)
+        else if (point >= levelBound[2])
         {
             spriteIndex = 2;
         }
@@ -35,19 +41,20 @@ public class CubeSprite : MonoBehaviour
     }
     public void ChangeSprite() 
     {
-        switch (_cubeController.point)
+        point = _cubeController.point;
+
+        if (point == levelBound[0]-1)
         {
-            case 499:
-                _currentSprite.sprite = _cubeController.sprites[1];
-                break;
-
-            case 249:
-                _currentSprite.sprite = _cubeController.sprites[2];
-                break;
-
-            case 99:
-                _currentSprite.sprite = _cubeController.sprites[3];
-                break;
+            _currentSprite.sprite = _cubeController.sprites[1];
         }
+        else if (point == levelBound[1]-1)
+        {
+            _currentSprite.sprite = _cubeController.sprites[2];
+        }
+        else if (point == levelBound[2]-1)
+        {
+            _currentSprite.sprite = _cubeController.sprites[3];
+        }
+
     }
 }

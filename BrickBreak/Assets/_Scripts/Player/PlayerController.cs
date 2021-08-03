@@ -2,15 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : PlayerData
 {
-    [SerializeField] Transform spawnPoint;
-    [SerializeField] GameObject weapon;
-    [SerializeField] float bulletSpeed;
-    [field:SerializeField] public int ballCount { get; set; }
-
     bool IsPlaying;
     int counter;
+
     ObjectPool _objectPool;
     PlayerInput _playerInput;
     WeaponRotater _weaponRotater;
@@ -18,7 +14,7 @@ public class PlayerController : MonoBehaviour
     {
         _objectPool = FindObjectOfType<ObjectPool>();
         _playerInput = new PlayerInput(this);
-        _weaponRotater = new WeaponRotater(weapon);
+        _weaponRotater = new WeaponRotater();
     }
     void Update()
     {
@@ -26,22 +22,24 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-        if (PlayerManager.playerState == PlayerManager.PlayerState.FireMOD)
+        switch (PlayerManager.playerState)
         {
-            _weaponRotater.RotateWeapon(_playerInput.Active());
-        }
-        if (PlayerManager.playerState == PlayerManager.PlayerState.PlayingMOD)
-        {   
-            StartCoroutine(WaitAndPush());
-            IsPlaying = true;
+            case PlayerManager.PlayerState.FireMOD:
+                _weaponRotater.RotateWeapon(weapon,_playerInput.Active());
+                break;
+
+            case PlayerManager.PlayerState.PlayingMOD:
+                StartCoroutine(WaitAndPush());
+                IsPlaying = true;
+                break;
         }
     }
     IEnumerator WaitAndPush() 
     {
         yield return new WaitForSeconds(0.1f);
-        _weaponRotater.Shout(_objectPool.GetBullet(spawnPoint), bulletSpeed);
+        _weaponRotater.Shout(_objectPool.GetBullet(spawnPoint), weapon, bulletSpeed);
         counter++;
-        if (counter !=ballCount) 
+        if (counter != ballCount) 
         {
            StartCoroutine(WaitAndPush());
         }
@@ -49,8 +47,19 @@ public class PlayerController : MonoBehaviour
         {
             counter = 0;
         }
-       
     }
-
+    public IEnumerator SetXPosition(Vector2 receiveTargetPos)
+    {
+        float time = 0;
+        Vector2 startPosition = transform.position;
+        Vector2 targetPosition = new Vector2(receiveTargetPos.x, transform.position.y);
+        while (time < horizontalSpeed)
+        {
+            transform.position = Vector2.Lerp(startPosition, targetPosition, time / horizontalSpeed);
+            time += Time.deltaTime;
+            yield return null;
+        }
+        transform.position = targetPosition;
+    }
 
 }
