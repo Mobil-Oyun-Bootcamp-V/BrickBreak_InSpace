@@ -1194,15 +1194,15 @@ PrefabInstance:
       objectReference: {fileID: 1522378610}
     - target: {fileID: 2022518331505552766, guid: 425a26bdd5f0bf6429ae77b2b631b14d, type: 3}
       propertyPath: selectPossibility.Array.data[0]
-      value: 85
+      value: 86
       objectReference: {fileID: 0}
     - target: {fileID: 2022518331505552766, guid: 425a26bdd5f0bf6429ae77b2b631b14d, type: 3}
       propertyPath: selectPossibility.Array.data[1]
-      value: 85
+      value: 57
       objectReference: {fileID: 0}
     - target: {fileID: 2022518331505552766, guid: 425a26bdd5f0bf6429ae77b2b631b14d, type: 3}
       propertyPath: selectPossibility.Array.data[2]
-      value: 84
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2022518331505552766, guid: 425a26bdd5f0bf6429ae77b2b631b14d, type: 3}
       propertyPath: selectPossibility.Array.data[3]
@@ -1210,7 +1210,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2022518331505552766, guid: 425a26bdd5f0bf6429ae77b2b631b14d, type: 3}
       propertyPath: selectPossibility.Array.data[4]
-      value: 10
+      value: 37
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 425a26bdd5f0bf6429ae77b2b631b14d, type: 3}
