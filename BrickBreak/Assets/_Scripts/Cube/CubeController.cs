@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-
-public class CubeController : MonoBehaviour
-{   
+public class CubeController : AMoveDown
+{
+    public ModState mod;
+    public enum ModState
+    {
+        Cube,
+        Star
+    }
     [field: SerializeField] public int point { get; set; }
     [field: SerializeField] public List<Sprite> sprites { get; private set; }
     [field: SerializeField] public List<int> levelBounds{ get; private set; }
@@ -15,73 +20,62 @@ public class CubeController : MonoBehaviour
     CubeSprite _cubeSprite;
     CubeAnimController _cubeAnimController;
 
-    bool IsMoved;
-
-    
     /////
     void Awake()
     {
-        _cubePool = GameObject.FindGameObjectWithTag("CubePool").GetComponent<Pool>();
+        if (mod == ModState.Cube)
+        {
+            _cubePool = GameObject.FindGameObjectWithTag("CubePool").GetComponent<Pool>();
+        }
+        else
+        {
+            _cubePool = GameObject.FindGameObjectWithTag("StarPool").GetComponent<Pool>();
+
+        }
+
         pointText = GetComponentInChildren<TextMeshPro>();
         _cubeSprite = new CubeSprite(this);
         _cubeAnimController = new CubeAnimController(this);
     }
-    void Start()
+    void OnEnable()
     {
+        _cubeSprite.StartSprite();
         pointText.text = point.ToString();
-        SetupSprite();
     }
     void Update()
     {   
         _cubeSprite.ChangeSprite();
-        if (PlayerManager.playerState == PlayerManager.PlayerState.AimMOD)
-        {
-            if (IsMoved)
-            {
-                return;
-            }
-            StartCoroutine(SupportClass.LerpMove(this.gameObject,transform.position,new Vector2(transform.position.x, transform.position.y - 1), 1));
-            IsMoved= true;
-        }
-        else
-        {
-            IsMoved = false;
-        }
+        OnMoveDownControl(1);
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
-        DecreasePoint();
-        _cubeAnimController.DamagedAnim();
-        Dead();
-    } 
-    /////
-    public void SetupSprite()
-    {
-        _cubeSprite.StartSprite();
-    }
-    //IEnumerator Move()
-    //{
-    //    float time = 0;
-    //    Vector2 targetPos = new Vector2(transform.position.x, transform.position.y-2);
-    //    while (time < 1)
-    //    {
-    //        transform.position = Vector2.Lerp(transform.position, targetPos, time / 1);
-    //        time += Time.deltaTime;
-    //        yield return null;
-    //    }
-    //    transform.position = targetPos;
-    //}
-    void Dead()
-    {
-        if (point == 0)
+        if (collision.collider.GetComponent<Bullet>() )
         {
-           _cubePool.SetObject(this.gameObject);
+            DecreasePoint();
+        }
+        if (collision.collider.CompareTag("BotGameLine"))
+        {
+            PlayerManager.SetMOD("EndMOD");
+        }
+
+    }
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.GetComponentInParent<lazerPowerUP>())
+        {
+            DecreasePoint();
         }
     }
-    void DecreasePoint()
+    /////
+    public void DecreasePoint()
     {
         point--;
         pointText.text = point.ToString();
+        _cubeAnimController.DamagedAnim();
+        if (point < 1)
+        {
+            _cubePool.SetObject(this.gameObject);
+        }
     }
 
 }

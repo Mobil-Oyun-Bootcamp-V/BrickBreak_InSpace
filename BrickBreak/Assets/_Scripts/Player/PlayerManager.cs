@@ -9,7 +9,8 @@ public class PlayerManager : MonoBehaviour
     {   
         AimMOD,
         FireMOD,
-        PlayingMOD
+        PlayingMOD,
+        EndMOD
     }
      public static void SetMOD(string key)
     {
@@ -25,6 +26,10 @@ public class PlayerManager : MonoBehaviour
 
             case "PlayingMOD":
                 playerState = PlayerState.PlayingMOD;
+                break;
+
+            case "EndMOD":
+                playerState = PlayerState.EndMOD;
                 break;
         }
     }

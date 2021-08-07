@@ -23,24 +23,27 @@ public class PlayerController : PlayerData
             case PlayerManager.PlayerState.PlayingMOD:
                 return;
 
+            case PlayerManager.PlayerState.EndMOD:
+                return;
+
             case PlayerManager.PlayerState.AimMOD:
                 _weaponRotater.RotateWeapon(weapon,_playerInput.Active());
                 break;
 
             case PlayerManager.PlayerState.FireMOD:
-                StartCoroutine(WaitAndPush());
+                StartCoroutine(WaitAndFire());
                 PlayerManager.SetMOD("PlayingMOD");
                 break;
         }
     }
-    IEnumerator WaitAndPush() 
+    IEnumerator WaitAndFire() 
     {
         yield return new WaitForSeconds(0.05f);
         _weaponRotater.Shout(_bulletPool.GetObject(spawnPoint), weapon, bulletSpeed);
         counter++;
         if (counter != ballCount) 
         {
-           StartCoroutine(WaitAndPush());
+           StartCoroutine(WaitAndFire());
         }
         else
         {

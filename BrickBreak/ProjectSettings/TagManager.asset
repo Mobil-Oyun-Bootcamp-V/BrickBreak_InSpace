@@ -6,6 +6,12 @@ TagManager:
   tags:
   - BulletPool
   - CubePool
+  - BotGameLine
+  - StarPool
+  - PlusPUPool
+  - xPUPool
+  - LaserPUPool
+  - laser
   layers:
   - Default
   - TransparentFX

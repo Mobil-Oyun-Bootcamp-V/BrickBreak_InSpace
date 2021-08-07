@@ -20,22 +20,13 @@ public class CubeSprite : MonoBehaviour
     public void StartSprite()
     {
         point = _cubeController.point;
-
-        if (point >= levelBound[0])
+        for(int i=0; i<levelBound.Count; i++)
         {
-            spriteIndex = 0;
-        }
-        else if (point >= levelBound[1])
-        {
-            spriteIndex = 1;
-        }
-        else if (point >= levelBound[2])
-        {
-            spriteIndex = 2;
-        }
-        else
-        {
-            spriteIndex = 3;
+            if (point >= levelBound[i])
+            {
+                spriteIndex = i;
+                break;
+            }
         }
         _currentSprite.sprite = _cubeController.sprites[spriteIndex];
     }
@@ -43,18 +34,13 @@ public class CubeSprite : MonoBehaviour
     {
         point = _cubeController.point;
 
-        if (point == levelBound[0]-1)
+        for(int i = 0; i < levelBound.Count; i++)
         {
-            _currentSprite.sprite = _cubeController.sprites[1];
+            if (point == levelBound[i] - 1)
+            {
+                _currentSprite.sprite = _cubeController.sprites[i+1];
+                break;
+            }
         }
-        else if (point == levelBound[1]-1)
-        {
-            _currentSprite.sprite = _cubeController.sprites[2];
-        }
-        else if (point == levelBound[2]-1)
-        {
-            _currentSprite.sprite = _cubeController.sprites[3];
-        }
-
     }
 }
