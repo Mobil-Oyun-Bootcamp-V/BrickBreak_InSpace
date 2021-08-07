@@ -1,6 +1,7 @@
 # 2D BrickBreak Game
 - 3 powerup
 - Ads
+- JSON data
 - Flex Spawner
 
 <h3> VIDEO </h3>
